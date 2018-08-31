@@ -17,11 +17,10 @@
       <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
     </ul> -->
-    <swiper style="height:100px" :options="swiperOption" ref="mySwiper" >
+    <input type="button" value="toggle" v-on:click="toggle"> <br />
+    <swiper v-show="isNewMember" style="height:100px" :options="swiperOption" ref="mySwiper" >
        <swiper-slide v-for="(slide, index) in swiperSlides" :key="index">I'm Slide {{ slide }}</swiper-slide>
-        
       </swiper>
-      
   </div>
 </template>
 
@@ -59,6 +58,7 @@ export default {
         // }
       },
       swiperSlides: ['212', 2, 3, 4, 5],
+     
     }
   },
    computed: {
@@ -66,10 +66,17 @@ export default {
         return this.$refs.mySwiper.swiper
       }
     },
-
+  methods:{
+      toggle:function(){
+        
+        this.isNewMember = !this.isNewMember;
+        console.log(this.isNewMember)
+      },
+    
+  },
   created() {
-
-    this.isNewMember = this.$route.query.isNew ;
+this.isNewMember = (this.$route.query.isNew == 1);
+    console.log("aaa " + this.$route.query.isNew)
     if(this.$route.query.result != 0){
       //登录失败
       return;
@@ -84,6 +91,10 @@ export default {
         console.log(e)
       })
   },
+  mounted() {
+    console.log("vvv " + this.$route.query.isNew)
+    // this.isNewMember = (this.$route.query.isNew == 1);
+  }
 }
 </script>
 
