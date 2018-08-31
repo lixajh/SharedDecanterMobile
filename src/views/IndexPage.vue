@@ -2,41 +2,29 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <h2>Essential Links</h2>
-    <!-- <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul> -->
-    <swiper v-show="showGuide" style="height:100% ;background: red;position: fixed;right: 0;top: 0;left: 0;bottom: 0;"
-     :options="swiperOption" ref="mySwiper" >
-       <!-- <swiper-slide v-for="(slide, index) in swiperSlides" :key="index">I'm Slide {{ slide }}</swiper-slide> -->
-       <swiper-slide style="height:100% ;background: green;"> I'm Slide 1</swiper-slide>
-       <swiper-slide style="height:100% ;background: yellow;"> I'm Slide 2</swiper-slide>
-       <swiper-slide style="height:100% ;background: black;"> I'm Slide 3</swiper-slide>
-    </swiper>
-
+    <div v-show="showGuide">
+      <swiper  style="height:100% ;background: white;position: fixed;right: 0;top: 0;left: 0;bottom: 0;" :options="swiperOption" ref="mySwiper" >
+         <swiper-slide v-for="(slide, index) in swiperSlides" :key="index">I'm Slide {{ slide }}</swiper-slide> 
+       
+      </swiper>
+      <div style="position: fixed;right: 10px;bottom: 10px;z-index: 1;">
+        <x-button  type="mini" @click.native="skipGuide" style="border-radius:99px; padding:1px 30px; background:rgba(199, 199, 199, 0.5)" >跳过</x-button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import post from '../common/request/request'
 import 'swiper/dist/css/swiper.css'
-import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import { swiper, swiperSlide} from 'vue-awesome-swiper'
+import{XButton } from 'vux'
 export default {
   name: 'HelloWorld',
   components: {
     swiper,
-    swiperSlide
+    swiperSlide,
+    XButton
   },
   data () {
     return {
@@ -71,7 +59,9 @@ export default {
       }
     },
   methods:{
-    
+    skipGuide(){
+      this.showGuide = false;
+    }
   },
   created() {
     this.showGuide = (this.$route.query.isNew == 1);
