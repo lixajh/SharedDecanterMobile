@@ -17,10 +17,14 @@
       <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
     </ul> -->
-    <input type="button" value="toggle" v-on:click="toggle"> <br />
-    <swiper v-show="isNewMember" style="height:100px" :options="swiperOption" ref="mySwiper" >
-       <swiper-slide v-for="(slide, index) in swiperSlides" :key="index">I'm Slide {{ slide }}</swiper-slide>
-      </swiper>
+    <swiper v-show="showGuide" style="height:100% ;background: red;position: fixed;right: 0;top: 0;left: 0;bottom: 0;"
+     :options="swiperOption" ref="mySwiper" >
+       <!-- <swiper-slide v-for="(slide, index) in swiperSlides" :key="index">I'm Slide {{ slide }}</swiper-slide> -->
+       <swiper-slide style="height:100% ;background: green;"> I'm Slide 1</swiper-slide>
+       <swiper-slide style="height:100% ;background: yellow;"> I'm Slide 2</swiper-slide>
+       <swiper-slide style="height:100% ;background: black;"> I'm Slide 3</swiper-slide>
+    </swiper>
+
   </div>
 </template>
 
@@ -37,7 +41,7 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      isNewMember: false,
+      showGuide: false,
       swiperOption: {
         // effect: 'coverflow', //slide,fade,coverflow
         // grabCursor: true,
@@ -67,16 +71,10 @@ export default {
       }
     },
   methods:{
-      toggle:function(){
-        
-        this.isNewMember = !this.isNewMember;
-        console.log(this.isNewMember)
-      },
     
   },
   created() {
-this.isNewMember = (this.$route.query.isNew == 1);
-    console.log("aaa " + this.$route.query.isNew)
+    this.showGuide = (this.$route.query.isNew == 1);
     if(this.$route.query.result != 0){
       //登录失败
       return;
@@ -91,10 +89,6 @@ this.isNewMember = (this.$route.query.isNew == 1);
         console.log(e)
       })
   },
-  mounted() {
-    console.log("vvv " + this.$route.query.isNew)
-    // this.isNewMember = (this.$route.query.isNew == 1);
-  }
 }
 </script>
 
