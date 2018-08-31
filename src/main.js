@@ -6,11 +6,10 @@ import VueRouter from 'vue-router'
 import App from './App'
 import store from './store'
 // import Home from './components/HelloFromVux'
-import { AjaxPlugin ,WechatPlugin} from 'vux'
+import { WechatPlugin} from 'vux'
 import router from './router'
 
 Vue.use(VueRouter)
-Vue.use(AjaxPlugin)
 Vue.use(WechatPlugin)
 
 // const routes = [{

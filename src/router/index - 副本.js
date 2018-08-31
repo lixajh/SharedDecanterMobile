@@ -10,12 +10,12 @@ export default new Router({
   base:'/mobilefront/',
   scrollBehavior: () => ({ y: 0 }),
   routes: [
-    // {
-    //   path: '/',
-    //   component: IndexPage,
-    //   redirect: '/index',
-    //   name: 'aa',
-    // },
+    {
+      path: '/',
+      component: IndexPage,
+      redirect: '/index',
+      name: 'aa',
+    },
     {
       path: '/index',
       name: 'index',
