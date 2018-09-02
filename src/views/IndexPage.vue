@@ -1,15 +1,18 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
+  <div >
+    <!-- 引导页部分 -->
     <div v-show="showGuide">
-      <swiper  style="height:100% ;background: white;position: fixed;right: 0;top: 0;left: 0;bottom: 0;" :options="swiperOption" ref="mySwiper" >
+      <swiper  style="height:100% ;background: white;position: fixed;right: 0;top: 0;left: 0;bottom: 0;" :options="guideSwiperOption" ref="mySwiper" >
          <swiper-slide v-for="(slide, index) in swiperSlides" :key="index">I'm Slide {{ slide }}</swiper-slide> 
        
       </swiper>
       <div style="position: fixed;right: 10px;bottom: 10px;z-index: 1;">
         <x-button  type="mini" @click.native="skipGuide" style="border-radius:99px; padding:1px 30px; background:rgba(199, 199, 199, 0.5)" >跳过</x-button>
       </div>
+    </div>
+  <!-- 主体部分 -->
+    <div>
+      <h1>{{ msg }}</h1> 
     </div>
   </div>
 </template>
@@ -30,7 +33,7 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       showGuide: false,
-      swiperOption: {
+      guideSwiperOption: {
         // effect: 'coverflow', //slide,fade,coverflow
         // grabCursor: true,
         // centeredSlides: true,
