@@ -76,83 +76,23 @@
   0% {transform:rotate(0deg);}
   50% {transform:rotate(-22deg);}
 }
-/* ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  width: 70px;
-  height: 25px;
-  position: relative;
-  opacity: 0;
-  animation: 2s fadeInUp infinite linear 2s;
-}
-li {
-  width: 6px;
-  height: 15px;
-  background: white;
-  position: absolute;
-  box-shadow: 0 0 1px white;
-  transform-origin: bottom;
-}
-li:nth-child(1) {
-  left: 26px;
-  bottom: 5px;
-  transform: rotate(-35deg);
-}
-li:nth-child(2) {
-  left: 34px;
-  bottom: 8px;
-}
-li:nth-child(3) {
-  left: 42px;
-  bottom: 5px;
-  transform: rotate(35deg);
-} */
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: scaleY(1);
-  }
-  
-  33% {
-    opacity: 1;
-    transform: scaleY(1.4);
-  }
-  64% {
-     opacity: .1;
-     transform: scaleY(1);
-  }
-  100% { 
-    opacity: 0;
-    transform: scaleY(.3);
-  }
-}
   </style>
 
   </head>
   <body>
       
-    <div id="app-box">
+    <div id="app-box">     
+      <div id="homeLoading" class="loader" style="flex-wrap: wrap">            
 
-        <!-- <div id="homeLoading"></div> -->
-        
-        <div id="homeLoading" class="loader" style="flex-wrap: wrap">            
-          <!-- <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul> -->
-          <div class="wineglass left">
-            <div class="top"></div>
-          </div>
-          <div class="wineglass right">
-            <div class="top"></div>
-          </div>
-        
-          <span style="width:100%;text-align: center; margin-top: -80vh">加载中请稍候...</span>
+        <div class="wineglass left">
+          <div class="top"></div>
         </div>
-        
-    </div>
-    <!-- built files will be auto injected -->
+        <div class="wineglass right">
+          <div class="top"></div>
+        </div>
+      
+        <span style="width:100%;text-align: center; margin-top: -80vh">加载中请稍候...</span>
+      </div>
+    </div> 
   </body>
 </html>
