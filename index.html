@@ -3,35 +3,130 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>共享醒酒器</title>
+    <title>peake</title>
 
     <style type="text/css">
-      #homeLoading{
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        margin-left: -2rem;
-        margin-top: -2rem;
-        width: 4rem;
-        height: 4rem;
-        border-radius: 50%;
-        border: 5px solid #BEBEBE;
-        border-left: 5px solid #498aca;
-        animation: load 1s linear infinite;
-        -moz-animation:load 1s linear infinite;
-        -webkit-animation: load 1s linear infinite;
-        -o-animation:load 1s linear infinite;
-      }
-      @-webkit-keyframes load
-      {
-        from{-webkit-transform:rotate(0deg);}
-        to{-webkit-transform:rotate(360deg);}
-      }
-      @keyframes load
-      {
-        from{-webkit-transform:rotate(0deg);}
-        to{-webkit-transform:rotate(360deg);}
-      }
+     *:before, *:after {
+  content: ''; 
+  position: absolute;
+}
+ #homeLoading {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  /* background: #C4D9EB; */
+} 
+.wineglass {
+  height: 36px;
+  position: relative;
+}
+.wineglass:after {
+  top: 47px;
+  left: 5px;
+  width: 20px;
+  height: 5px;
+  background: white;
+  box-shadow: 0 0 1px white;
+}
+.top {
+  background: white;
+  width: 30px;
+  height: 36px;
+  border-radius: 0 0 36px 36px;
+  box-shadow: 0 0 1px white;
+}
+.top:before {
+  left: 4px;
+  bottom: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(transparent 50%, #F36E3E 50%);
+}
+.left .top:before {
+  animation: rotate2 2s linear infinite;
+}
+.right .top:before {
+  animation: rotate1 2s linear infinite;
+}
+.top:after {
+  top: 35px;
+  left: 12px;
+  width: 6px;
+  height: 13px;
+  background: white;
+  box-shadow: 0 0 1px white;
+}
+.left {
+  display: inline-block;
+  margin-right: 10px;
+  animation: rotate1 2s cubic-bezier(.39,1.52,.46,.92) infinite;
+}
+.right {
+  display: inline-block;
+  animation: rotate2 2s cubic-bezier(.39,1.52,.46,.92) infinite;
+}
+@keyframes rotate1{
+  0% {transform: rotate(0deg);}
+  50% {transform:rotate(22deg);}
+}
+@keyframes rotate2{
+  0% {transform:rotate(0deg);}
+  50% {transform:rotate(-22deg);}
+}
+/* ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 70px;
+  height: 25px;
+  position: relative;
+  opacity: 0;
+  animation: 2s fadeInUp infinite linear 2s;
+}
+li {
+  width: 6px;
+  height: 15px;
+  background: white;
+  position: absolute;
+  box-shadow: 0 0 1px white;
+  transform-origin: bottom;
+}
+li:nth-child(1) {
+  left: 26px;
+  bottom: 5px;
+  transform: rotate(-35deg);
+}
+li:nth-child(2) {
+  left: 34px;
+  bottom: 8px;
+}
+li:nth-child(3) {
+  left: 42px;
+  bottom: 5px;
+  transform: rotate(35deg);
+} */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: scaleY(1);
+  }
+  
+  33% {
+    opacity: 1;
+    transform: scaleY(1.4);
+  }
+  64% {
+     opacity: .1;
+     transform: scaleY(1);
+  }
+  100% { 
+    opacity: 0;
+    transform: scaleY(.3);
+  }
+}
   </style>
 
   </head>
@@ -39,7 +134,24 @@
       
     <div id="app-box">
 
-        <div id="homeLoading"></div>
+        <!-- <div id="homeLoading"></div> -->
+        
+        <div id="homeLoading" class="loader" style="flex-wrap: wrap">            
+          <!-- <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul> -->
+          <div class="wineglass left">
+            <div class="top"></div>
+          </div>
+          <div class="wineglass right">
+            <div class="top"></div>
+          </div>
+        
+          <span style="width:100%;text-align: center; margin-top: -80vh">加载中请稍候...</span>
+        </div>
+        
     </div>
     <!-- built files will be auto injected -->
   </body>

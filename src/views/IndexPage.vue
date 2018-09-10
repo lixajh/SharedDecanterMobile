@@ -26,7 +26,7 @@
           </swiper-slide> 
           <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
-      <x-button action-type="button" type="primary" style="border-radius:23px; margin-top:20px; width:250px; background-color: #1AAD19">立即支付</x-button>
+      <x-button action-type="button" type="primary"  @click.native="pay"  style="border-radius:23px; margin-top:20px; width:250px; background-color: #1AAD19">立即支付</x-button>
     </div>
   </div>
 </template>
@@ -36,6 +36,7 @@ import post from '../common/request/request'
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide} from 'vue-awesome-swiper'
 import{XButton,XHeader } from 'vux'
+
 export default {
   name: 'HelloWorld',
   components: {
@@ -46,7 +47,6 @@ export default {
   },
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
       showGuide: false,
       guideSwiperOption: {
         centeredSlides: true,
@@ -92,6 +92,10 @@ export default {
     },
     itemTap(event){
        console.log('你碰了Swiper' + event);
+    },
+    pay(){
+       console.log('pay');
+       this.$router.push({ name: 'working', params: { userId: 'sss' }})
     }
   },
   created() {
@@ -191,6 +195,7 @@ a {
 
 .swiper-pagination-bullet-active i {
 	-webkit-transform: scale(1.5);
+  transform: scale(1.5);
 	background-size: auto 100%;
 	color: #815d4b
 }

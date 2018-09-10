@@ -1,6 +1,3 @@
-// import { login, logout, getBasicInfo } from '@/api/login'
-// import { getToken, setToken, removeToken } from '@/utils/auth'
-
 const user = {
   state: {
     login_status: 0,//0:位置 -1：未登录 1：登陆
