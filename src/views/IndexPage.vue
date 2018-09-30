@@ -12,7 +12,8 @@
     </div>
   <!-- 主体部分 -->
     <div v-show="!showGuide">
-      <x-header :left-options="{showBack: false}" >选择使用模式 <a slot="right">历史订单</a> </x-header>
+      <!-- <x-header :left-options="{showBack: false}" :right-options="{showMore: true}" @on-click-more="showMenus = true">选择使用模式  </x-header> -->
+      <x-header :left-options="{showBack: false}"  @on-click-more="menuclick" >选择使用模式 <a  slot="right"><div @click="menuclick">...</div></a> </x-header>
       <div>
         <div style="position: absolute; right: 0;">设备状态：在线</div>
         <div style="position: relative; ">设备编号：12345678</div>
@@ -21,12 +22,18 @@
        <swiper   :options="itemSwiperOption" ref="itemSwiper" @tap='itemTap' style="margin-top:40px">
          <swiper-slide v-for="(slide, index) in itemSlides" :key="index" >
             <div v-bind:style="{background:slide.color,color:'white', width:'100%'}">
-              <div  style="text-align:center;height:300px;"> 售价 {{ slide.price }} 元</div>
+              <div  style="text-align:center;height:270px;"> 售价 {{ slide.price }} 元</div>
             </div>
           </swiper-slide> 
           <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
       <x-button action-type="button" type="primary"  @click.native="pay"  style="border-radius:23px; margin-top:20px; width:250px; background-color: #1AAD19">立即支付</x-button>
+      <x-button action-type="button" type="primary"  @click.native="pay"  style="border-radius:23px; margin-top:20px; width:250px; background-color: #1AAD19">扫码设备</x-button>
+
+    </div>
+
+     <div v-transfer-dom>
+      <actionsheet :menus="menus" v-model="showMenus" show-cancel></actionsheet>
     </div>
   </div>
 </template>
@@ -35,7 +42,7 @@
 import post from '../common/request/request'
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide} from 'vue-awesome-swiper'
-import{XButton,XHeader } from 'vux'
+import{XButton,XHeader,Actionsheet } from 'vux'
 
 export default {
   name: 'HelloWorld',
@@ -43,11 +50,19 @@ export default {
     swiper,
     swiperSlide,
     XButton,
+    Actionsheet,
     XHeader
   },
   data () {
     return {
       showGuide: false,
+
+       menus: {
+        menu1: '历史订单',
+        menu2: '红酒百科'
+      },
+      showMenus: false,
+
       guideSwiperOption: {
         centeredSlides: true,
       },
@@ -87,6 +102,9 @@ export default {
       }
     },
   methods:{
+    menuclick(){
+      this.showMenus = true;
+    },
     skipGuide(){
       this.showGuide = false;
     },
