@@ -17,7 +17,7 @@
       <div>
         <div style="position: absolute; right: 0;">设备状态：在线</div>
         <div style="position: relative; ">设备编号：12345678</div>
-        <div style="position: relative; top: 0px;">工作状态：空闲</div>
+        <div style="position: relative; top: 0px;">工作状态：空闲1111</div>
       </div>
        <swiper   :options="itemSwiperOption" ref="itemSwiper" @tap='itemTap' style="margin-top:40px">
          <swiper-slide v-for="(slide, index) in itemSlides" :key="index" >
