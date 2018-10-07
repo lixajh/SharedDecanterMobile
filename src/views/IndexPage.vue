@@ -16,8 +16,8 @@
       <x-header :left-options="{showBack: false}"  @on-click-more="menuclick" >选择使用模式 <a  slot="right"><div @click="menuclick">...</div></a> </x-header>
       <div>
         <div style="position: absolute; right: 0;">设备状态：在线</div>
-        <div style="position: relative; ">设备编号：12345678</div>
-        <div style="position: relative; top: 0px;">工作状态：空闲1111</div>
+        <div style="position: relative; ">设备编号： {{ deviceId }}</div>
+        <div style="position: relative; top: 0px;">工作状态：空闲</div>
       </div>
        <swiper   :options="itemSwiperOption" ref="itemSwiper" @tap='itemTap' style="margin-top:40px">
          <swiper-slide v-for="(slide, index) in itemSlides" :key="index" >
@@ -56,7 +56,7 @@ export default {
   data () {
     return {
       showGuide: false,
-
+      deviceId: '',
        menus: {
         menu1: '历史订单',
         menu2: '红酒百科'
@@ -119,6 +119,7 @@ export default {
   created() {
     console.log("this.$route.query.isNew"+this.$route.query.isNew)
     this.showGuide = (this.$route.query.isNew == 1);
+    this.deviceId = this.$route.query.deviceId
     if(this.$route.query.result != 0){
      
       return;
