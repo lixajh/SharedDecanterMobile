@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import store from '@/store'
 import { AjaxPlugin} from 'vux'
 
 
@@ -6,7 +7,7 @@ Vue.use(AjaxPlugin)
 // 创建axios实例
 const service = Vue.http.create({
     baseURL: 'http://peake.mynatapp.cc/server/mobile',
-    timeout: 10000,
+    timeout:60000,
     headers: {
         'Content-Type':'application/x-www-form-urlencoded;charset=utf-8',
         'user_type':'member',
@@ -35,51 +36,41 @@ service.interceptors.response.use(
     
 
      if (res.code == 401) {
-      store.commit('SET_LOGIN_STATUS', -1)
-      store.dispatch('FedLogOut').then(() => {
-        location.reload()// 为了重新实例化vue-router对象 避免bug
-      })
-        return Promise.resolve()
+      // store.commit('SET_LOGIN_STATUS', -1)
+      // store.dispatch('FedLogOut').then(() => {
+      //   location.reload()// 为了重新实例化vue-router对象 避免bug
+      // })
+      //   return Promise.resolve()
+      alert("您已登录超时，请重新扫码或打开链接");
       }
 
-      // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
-      // if (code == 400) {
-      //   MessageBox.confirm('你已被登出，点击确定重新登录', '确定登出', {
-      //     confirmButtonText: '重新登录',
-      //     cancelButtonText: '取消',
-      //     type: 'warning'
-      //   }).then(() => {
-      //     store.commit('SET_LOGIN_STATUS', -1)
-      //     store.dispatch('FedLogOut').then(() => {
-      //       location.reload()// 为了重新实例化vue-router对象 避免bug
-      //     })
-      //   })
-      //   return Promise.reject('error')
-      // }
+ 
       if (res.code == 401) { 
-        store.commit('SET_LOGIN_STATUS', -1)
-            store.dispatch('FedLogOut').then(() => {
-              location.reload()// 为了重新实例化vue-router对象 避免bug
-            })
-        return Promise.reslove()
+        // store.commit('SET_LOGIN_STATUS', -1)
+        //     store.dispatch('FedLogOut').then(() => {
+        //       location.reload()// 为了重新实例化vue-router对象 避免bug
+        //     })
+        // return Promise.reslove()
         
       }
 
       if (res.code == 400) { 
-        Message({
-          message: res.message,
-          type: 'error',
-          duration: 2 * 1000
+        // 显示文字
+        Vue.$vux.toast.show({
+          text: res.message,
+          // time : '12s',
         })
+        // Message({
+        //   message: res.message,
+        //   type: 'error',
+        //   duration: 2 * 1000
+        // })
         return Promise.reject('error')
         
       }
       if (res.code == 404) { 
-        Message({
-          message: res.message,
-          type: 'error',
-          duration: 2 * 1000
-        })
+       
+        Vue.$vux.toast.text(res.message, 'top')
         return Promise.reject('error')
         
       }
@@ -89,11 +80,7 @@ service.interceptors.response.use(
   },
   error => {
     console.log('err' + error.code)// for debug
-    Message({
-      message: '系统错误，请稍后再试:'+error.message,
-      type: 'error',
-      duration: 3 * 1000
-    })
+    Vue.$vux.toast.text(res.message, 'top')
     return Promise.reject(error)
   }
 )

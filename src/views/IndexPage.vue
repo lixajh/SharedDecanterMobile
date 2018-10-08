@@ -16,7 +16,7 @@
       <x-header :left-options="{showBack: false}"  @on-click-more="menuclick" >选择使用模式 <a  slot="right"><div @click="menuclick">...</div></a> </x-header>
       <div>
         <div style="position: absolute; right: 0;">设备状态：在线</div>
-        <div style="position: relative; ">设备编号： {{ deviceId }}</div>
+        <div style="position: relative; ">设备编号： {{ deviceCode }}</div>
         <div style="position: relative; top: 0px;">工作状态：空闲</div>
       </div>
        <swiper   :options="itemSwiperOption" ref="itemSwiper" @tap='itemTap' style="margin-top:40px">
@@ -41,9 +41,12 @@
 <script>
 import post from '../common/request/request'
 import 'swiper/dist/css/swiper.css'
+// import store from '@/store'
+import { mapState } from 'vuex'
 import { swiper, swiperSlide} from 'vue-awesome-swiper'
 import{XButton,XHeader,Actionsheet } from 'vux'
-
+import {getMemberDetail} from '@/api/member'
+import {getDeviceDetailByCode,getPayInfo} from '@/api/device'
 export default {
   name: 'HelloWorld',
   components: {
@@ -56,7 +59,8 @@ export default {
   data () {
     return {
       showGuide: false,
-      deviceId: '',
+      deviceCode: 'aaa',
+      device: {},
        menus: {
         menu1: '历史订单',
         menu2: '红酒百科'
@@ -99,7 +103,10 @@ export default {
    computed: {
       swiper() {
         return this.$refs.guideSwiper.swiper
-      }
+      },
+      ...mapState({
+        userInfo: state => state.vux_store.userInfo
+      })
     },
   methods:{
     menuclick(){
@@ -111,26 +118,68 @@ export default {
     itemTap(event){
        console.log('你碰了Swiper' + event);
     },
-    pay(){
-       console.log('pay');
-       this.$router.push({ name: 'working', params: { userId: 'sss' }})
+    getDeviceDetail(){
+      getDeviceDetailByCode(this.deviceCode).then(response => {
+      this.device = response.data.data.device;
+    
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+
+    payByAlipay(payNo) {
+      // 如果jsbridge已经注入则直接调用
+        AlipayJSBridge.call("tradePay", {tradeNO: payNo}
+        , function(result) {
+            alert(JSON.stringify(result));
+            if(result.resultCode == '9000'){
+              //订单支付成功;
+              this.$router.push({ name: 'working', params: { userId: 'sss' }})
+            }
+          });
+      
+    },
+
+    pay(productId){
+      getPayInfo('1',this.device.pkId).then(response => {
+        if (!window.AlipayJSBridge) {
+          // alert('支付宝正在初始化，请稍后再试')
+          this.$vux.toast.show({text: '支付宝正在初始化，请稍后再试'})
+          return;
+      }
+        var data = response.data.data;
+        // if(this.userInfo.)
+        this.payByAlipay(data.transactionNo)
+       
+      }).catch(e => {
+        console.log(e)
+      })
+       
     }
   },
   created() {
-    console.log("this.$route.query.isNew"+this.$route.query.isNew)
+    
     this.showGuide = (this.$route.query.isNew == 1);
-    this.deviceId = this.$route.query.deviceId
+   
+    this.deviceCode = this.$route.query.deviceId;
+   
     if(this.$route.query.result != 0){
      
       return;
     }
-
-    post.post('/member/detail').then(response => {
+    //获取本人信息
+    getMemberDetail().then(response => {
       var data = response.data.data;
-    
+      this.$store.commit('updateUserInfo', data)
     }).catch(e => {
         console.log(e)
-      })
+    })
+
+    if(this.deviceCode != null && this.deviceCode != ''){
+      //设备code不为空获取设备信息
+      this.getDeviceDetail()
+    }
+   
   },
 }
 </script>

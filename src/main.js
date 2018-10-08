@@ -6,12 +6,13 @@ import VueRouter from 'vue-router'
 import App from './App'
 import store from './store'
 // import Home from './components/HelloFromVux'
-import { WechatPlugin,XButton} from 'vux'
+import { WechatPlugin,XButton,ToastPlugin  } from 'vux'
 import router from './router'
 
 Vue.use(VueRouter)
 Vue.use(WechatPlugin)
 Vue.component('x-button', XButton)
+Vue.use(ToastPlugin, {position: 'middle',type: 'text',time: '2000'})
 
 // const routes = [{
 //   path: '/',
