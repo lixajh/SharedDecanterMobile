@@ -141,19 +141,21 @@ export default {
     },
 
     pay(productId){
-      getPayInfo('1',this.device.pkId).then(response => {
-        if (!window.AlipayJSBridge) {
-          // alert('支付宝正在初始化，请稍后再试')
-          this.$vux.toast.show({text: '支付宝正在初始化，请稍后再试'})
-          return;
-      }
-        var data = response.data.data;
-        // if(this.userInfo.)
-        this.payByAlipay(data.transactionNo)
+
+      this.$router.push({ name: 'working', params: { userId: 'sss' }})
+      // getPayInfo('1',this.device.pkId).then(response => {
+      //   if (!window.AlipayJSBridge) {
+      //     // alert('支付宝正在初始化，请稍后再试')
+      //     this.$vux.toast.show({text: '支付宝正在初始化，请稍后再试'})
+      //     return;
+      // }
+      //   var data = response.data.data;
+      //   // if(this.userInfo.)
+      //   this.payByAlipay(data.transactionNo)
        
-      }).catch(e => {
-        console.log(e)
-      })
+      // }).catch(e => {
+      //   console.log(e)
+      // })
        
     }
   },
