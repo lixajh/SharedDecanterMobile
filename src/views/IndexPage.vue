@@ -3,7 +3,7 @@
     <!-- 引导页部分 -->
     <div v-show="showGuide">
       <swiper  style="height:100% ;background: white;position: fixed;right: 0;top: 0;left: 0;bottom: 0;" :options="guideSwiperOption" ref="guideSwiper" >
-         <swiper-slide v-for="(slide, index) in guideSlides" :key="index" :style="{background:slide.color,color:'white', width:'100%'}">I'm Slide qqqqqqqqqqqqq{{ slide.content }}</swiper-slide> 
+         <swiper-slide v-for="(slide, index) in guideSlides" :key="index" :style="{background:slide.color,color:'white', width:'100%'}">I'm Slide {{ slide.content }}</swiper-slide> 
        
       </swiper>
       <div style="position: fixed;right: 10px;bottom: 10px;z-index: 1;">
@@ -19,9 +19,9 @@
         <div style="position: relative; ">设备编号： {{ deviceCode }}</div>
         <div style="position: relative; top: 0px;">工作状态：空闲</div>
       </div>
-       <swiper   :options="itemSwiperOption" ref="itemSwiper" @tap='itemTap' style="margin-top:40px">
-         <swiper-slide v-for="(slide, index) in itemSlides" :key="index" >
-            <div v-bind:style="{background:slide.color,color:'white', width:'100%'}">
+       <swiper v-show="productList.length!=0" :options="itemSwiperOption" ref="itemSwiper"  style="margin-top:40px">
+         <swiper-slide v-for="(slide, index) in productList" :key="index" >
+            <div v-bind:style="{background:'black',color:'white', width:'100%'}">
               <div  style="text-align:center;height:270px;"> 售价 {{ slide.price }} 元</div>
             </div>
           </swiper-slide> 
@@ -47,6 +47,7 @@ import { swiper, swiperSlide} from 'vue-awesome-swiper'
 import{XButton,XHeader,Actionsheet } from 'vux'
 import {getMemberDetail} from '@/api/member'
 import {getDeviceDetailByCode,getPayInfo} from '@/api/device'
+import {getProductList} from '@/api/product'
 export default {
   name: 'HelloWorld',
   components: {
@@ -61,6 +62,7 @@ export default {
       showGuide: false,
       deviceCode: 'aaa',
       device: {},
+      productList:[],
        menus: {
         menu1: '历史订单',
         menu2: '红酒百科'
@@ -115,12 +117,19 @@ export default {
     skipGuide(){
       this.showGuide = false;
     },
-    itemTap(event){
-       console.log('你碰了Swiper' + event);
-    },
+
     getDeviceDetail(){
       getDeviceDetailByCode(this.deviceCode).then(response => {
       this.device = response.data.data.device;
+    
+      }).catch(e => {
+        console.log(e)
+      })
+    },
+
+    refreshProductList(){
+      getProductList().then(response => {
+        this.productList = response.data.data;
     
       }).catch(e => {
         console.log(e)
@@ -141,21 +150,22 @@ export default {
     },
 
     pay(productId){
+      var swiperIndex = this.$refs.itemSwiper.swiper.activeIndex;
 
-      this.$router.push({ name: 'working', params: { userId: 'sss' }})
-      // getPayInfo('1',this.device.pkId).then(response => {
-      //   if (!window.AlipayJSBridge) {
-      //     // alert('支付宝正在初始化，请稍后再试')
-      //     this.$vux.toast.show({text: '支付宝正在初始化，请稍后再试'})
-      //     return;
-      // }
-      //   var data = response.data.data;
-      //   // if(this.userInfo.)
-      //   this.payByAlipay(data.transactionNo)
+      // this.$router.push({ name: 'working', params: { userId: 'sss' }})
+      getPayInfo(this.productList[swiperIndex].pkId,this.device.pkId).then(response => {
+        if (!window.AlipayJSBridge) {
+          // alert('支付宝正在初始化，请稍后再试')
+          this.$vux.toast.show({text: '支付宝正在初始化，请稍后再试'})
+          return;
+      }
+        var data = response.data.data;
+        // if(this.userInfo.)
+        this.payByAlipay(data.transactionNo)
        
-      // }).catch(e => {
-      //   console.log(e)
-      // })
+      }).catch(e => {
+        console.log(e)
+      })
        
     }
   },
@@ -179,8 +189,10 @@ export default {
 
     if(this.deviceCode != null && this.deviceCode != ''){
       //设备code不为空获取设备信息
-      this.getDeviceDetail()
+      this.getDeviceDetail();
     }
+
+    this.refreshProductList();
    
   },
 }
